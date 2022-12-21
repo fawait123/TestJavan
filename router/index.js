@@ -5,10 +5,16 @@ const router = express.Router();
 // route family get
 router.get("/", Family.get);
 
-// route add family
-router.get("/add-family", Family.form);
+// route add form family
+router.get("/add-family", Family.create);
 
 // route post family to database
 router.post("/add-family", Family.post);
+
+// route edit form family
+router.get("/edit-family", Family.edit);
+
+// route update family
+router.post("/edit-family", Family.update);
 
 module.exports = router;
