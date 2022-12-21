@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
+      family_id: {
+        type: DataTypes.INTEGER,
+      },
       name: {
         type: DataTypes.STRING,
       },
