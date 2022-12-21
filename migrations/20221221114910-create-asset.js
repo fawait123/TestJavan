@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("families", {
+    await queryInterface.createTable("assets", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,8 +12,8 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
       },
-      gender: {
-        type: Sequelize.ENUM(["male", "female"]),
+      price: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
@@ -24,12 +24,12 @@ module.exports = {
         type: Sequelize.DATE,
       },
       deletedAt: {
-        type: Sequelize.DATE,
         allowNull: true,
+        type: Sequelize.DATE,
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("families");
+    await queryInterface.dropTable("assets");
   },
 };

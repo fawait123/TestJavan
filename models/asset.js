@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class family extends Model {
+  class asset extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  family.init(
+  asset.init(
     {
       id: {
         allowNull: false,
@@ -22,8 +22,8 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: Sequelize.STRING,
       },
-      gender: {
-        type: Sequelize.ENUM(["male", "female"]),
+      price: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
@@ -34,15 +34,15 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.DATE,
       },
       deletedAt: {
-        type: Sequelize.DATE,
         allowNull: true,
+        type: Sequelize.DATE,
       },
     },
     {
       sequelize,
       paranoid: true,
-      modelName: "family",
+      modelName: "asset",
     }
   );
-  return family;
+  return asset;
 };
