@@ -1,12 +1,11 @@
 const Model = require("./../../models");
 const validate = require("./../../helpers/validation");
 
-const Family = {
-  get: async (req, res) => {
+const Asset = {
+  create: async (req, res) => {
     try {
-      return res.render("pages/family/index", {
-        data: await Family.data(),
-        message: req.flash("message")[0],
+      return res.render("pages/asset/create", {
+        family: await Asset.data(),
       });
     } catch (error) {
       return res.send({ error: error.message });
@@ -18,30 +17,26 @@ const Family = {
 
       // validate request
       const validation = validate(body);
+      console.log(validation);
       // check validation error
       if (validation.length > 0) {
-        return res.render("pages/family/create", {
+        return res.render("pages/asset/create", {
           errors: validation,
           old: body,
+          family: await Asset.data(),
         });
       }
 
-      await Model.family
+      await Model.asset
         .create({
+          family_id: body.family_id,
           name: body.name,
-          gender: body.gender,
+          price: body.price,
         })
         .then(async (result) => {
-          req.flash("message", "Add family successfully");
+          req.flash("message", "Add asset successfully");
           return res.redirect("/");
         });
-    } catch (error) {
-      return res.send({ error: error.message });
-    }
-  },
-  create: async (req, res) => {
-    try {
-      return res.render("pages/family/create");
     } catch (error) {
       return res.send({ error: error.message });
     }
@@ -50,7 +45,7 @@ const Family = {
     try {
       const query = req.query;
       const id = query.id;
-      const check = await Model.family.findOne({
+      const check = await Model.asset.findOne({
         where: {
           id: id,
         },
@@ -59,8 +54,11 @@ const Family = {
       if (!check) {
         return res.render("pages/abort/404");
       }
-      return res.render("pages/family/edit", {
-        family: check,
+
+      return res.render("pages/asset/edit", {
+        asset: check,
+        family: await Asset.data(),
+        id: id,
       });
     } catch (error) {
       return res.send({ error: error.message });
@@ -69,7 +67,7 @@ const Family = {
   update: async (req, res) => {
     try {
       const body = req.body;
-      const check = await Model.family.findOne({
+      const check = await Model.asset.findOne({
         where: {
           id: body.id,
         },
@@ -82,16 +80,17 @@ const Family = {
       const validation = validate(body);
       // check validation error
       if (validation.length > 0) {
-        return res.redirect("/edit-family?id=" + body.id);
+        return res.redirect("/edit-asset?id=" + body.id);
       }
 
       await check
         .update({
+          family_id: body.family_id,
           name: body.name,
-          gender: body.gender,
+          price: body.price,
         })
         .then(async (result) => {
-          req.flash("message", "Edit family successfully");
+          req.flash("message", "Edit asset successfully");
           return res.redirect("/");
         });
     } catch (error) {
@@ -101,7 +100,7 @@ const Family = {
   remove: async (req, res) => {
     try {
       const query = req.query;
-      const check = await Model.family.findOne({
+      const check = await Model.asset.findOne({
         where: {
           id: query.id,
         },
@@ -112,7 +111,7 @@ const Family = {
       }
 
       await check.destroy().then((result) => {
-        req.flash("message", "Remove family successfully");
+        req.flash("message", "Remove asset successfully");
         return res.redirect("/");
       });
     } catch (error) {
@@ -120,32 +119,10 @@ const Family = {
     }
   },
   data: async () => {
-    return await Model.family
-      .findAll({
-        include: [
-          {
-            model: Model.asset,
-            as: "assets",
-            required: false,
-          },
-        ],
-      })
-      .then((result) => {
-        const data = result.map((el) => {
-          let totalPrice = el.assets.reduce(
-            (prev, next) => prev + next.price,
-            0
-          );
-          return {
-            ...el.dataValues,
-            totalPrice,
-            totalAsset: el.assets.length,
-          };
-        });
-
-        return data;
-      });
+    return await Model.family.findAll().then((result) => {
+      return result;
+    });
   },
 };
 
-module.exports = Family;
+module.exports = Asset;

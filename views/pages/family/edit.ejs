@@ -1,0 +1,40 @@
+<%- include('../../templates/header') %>
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-5">Edit Data Family</h1>
+            <form action="edit-family" method="post">
+                <input type="hidden" name="id" value="<%= family.id %>" >
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" value="<%= family.name %>" placeholder="Input name" class="form-control">
+                    <% if(typeof errors !== 'undefined'){ %>
+                        <% errors.length > 0 ? errors.map((el,_index)=>{ %>
+                            <div class="text-danger text-small">
+                                <%= el?.name %>
+                            </div>
+                        <% }) : null %>
+                    <% } %>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select name="gender" id="gender" class="form-control">
+                        <option value="">-- select --</option>
+                        <option value="male" <%= family.gender === 'male' ? 'selected' : '' %> >Male</option>
+                        <option value="female" <%= family.gender === 'female' ? 'selected' : '' %> >Female</option>
+                    </select>
+                    <% if(typeof errors !== 'undefined'){ %>
+                        <% errors.length > 0 ? errors.map((el,_index)=>{ %>
+                            <div class="text-danger text-small">
+                                <%= el?.gender %>
+                            </div>
+                        <% }) : null %>
+                    <% } %>
+                </div>
+                <div class="form-group mt-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="/" class="btn btn-warning">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+<%- include('../../templates/footer') %>

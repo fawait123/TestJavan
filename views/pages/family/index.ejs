@@ -9,12 +9,16 @@
                     </div>
                 <% } %>
                 <a href="add-family" class="btn btn-primary mb-3">Add</a>
+                <a href="add-asset" class="btn btn-primary mb-3">Add Asset</a>
+                
                 <table class="table table-hover table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>NO</th>
                             <th>Name</th>
                             <th>Gender</th>
+                            <th>Total Asset</th>
+                            <th>Total Price</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -24,9 +28,17 @@
                             <td><%= ++_index %></td>
                             <td><%= el.name %></td>
                             <td><%= el.gender%></td>
+                            <td><% if(el.totalAsset == 0) { %>
+                                <span class="badge bg-danger">no asset</span>    
+                            <% }else{%>
+                                <span><%= el.totalAsset %></span>
+                            <%}%>
+                            </td>
+                            <td><%= el.totalPrice%></td>
                             <td>
-                                <a href="" class="btn btn-success btn-sm">edit</a>
-                                <a href="" class="btn btn-danger btn-sm">delete</a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-secondary btn-sm" data-asset="<%= JSON.stringify(el.assets) %>" data-id="<%= el.id %>">detail</a>
+                                <a href="edit-family?id=<%= el.id %>" class="btn btn-success btn-sm">edit</a>
+                                <a href="remove-family?id=<%= el.id %>" class="btn btn-danger btn-sm">delete</a>
                             </td>
                         </tr>
                        <% }) %>
@@ -34,4 +46,69 @@
                 </table>
             </div>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Asset</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>NO</th>
+                                <th>Name</th>
+                                <th>Gender</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody">
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+<script>
+    $('#exampleModal').on('show.bs.modal', function (e) {
+        let target = e.relatedTarget
+        let id = $(target).data('id')
+        let asset = $(target).data('asset')
+        let html = ''
+        let btnAdd = `
+        <a href="add-asset?id=${id}" class="btn btn-primary btn-sm mb-3">Add</a>
+        `
+        if(asset.length > 0){
+            asset.map((el,_index)=>{
+                html += `
+                <tr>
+                        <td>${++_index}</td>
+                        <td>${el?.name}</td>
+                        <td>${el?.price}</td>
+                        <td>
+                            <a href="edit-asset?id=${el.id}" class="btn btn-success btn-sm">edit</a>
+                            <a href="remove-asset?id=${el.id}" class="btn btn-danger btn-sm">delete</a>
+                        </td>
+                </tr>
+                `
+            })
+        }else{
+            html += `
+                <tr>
+                    <td align="center" colspan="4">Data not found</td>
+                </tr>
+                `
+        }
+        $("#tbody").html(html)
+    })
+</script>
+  
 <%- include('../../templates/footer') %>
