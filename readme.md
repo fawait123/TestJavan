@@ -5,6 +5,8 @@ step
 3. create database with name test_javan
 4. yarn sequelize db:migrate or npx sequelize db:migrate
 5. yarn dev
+6. copy link address in terminal
+7. paste to browser
 
 optional
 
