@@ -2,7 +2,6 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const validate = require("./helpers/validation");
 const router = require("./router");
 // use dotenv to use file .env
 require("dotenv").config();

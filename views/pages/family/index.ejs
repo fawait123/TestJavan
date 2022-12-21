@@ -2,6 +2,12 @@
         <div class="row">
             <div class="col-12">
                 <h1 class="mb-5">List Data Family</h1> 
+                <% if(typeof message !== 'undefined'){ %>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <%= message %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <% } %>
                 <a href="add-family" class="btn btn-primary mb-3">Add</a>
                 <table class="table table-hover table-bordered table-striped">
                     <thead>
@@ -13,12 +19,17 @@
                         </tr>
                     </thead>
                     <tbody>
+                       <% data.map((el,_index)=>{ %>
                         <tr>
-                            <td>xxx</td>
-                            <td>xxx</td>
-                            <td>xxx</td>
-                            <td>xxx</td>
+                            <td><%= ++_index %></td>
+                            <td><%= el.name %></td>
+                            <td><%= el.gender%></td>
+                            <td>
+                                <a href="" class="btn btn-success btn-sm">edit</a>
+                                <a href="" class="btn btn-danger btn-sm">delete</a>
+                            </td>
                         </tr>
+                       <% }) %>
                     </tbody>
                 </table>
             </div>
